@@ -4,7 +4,7 @@
 
 **/
 
-var car = { 
+const car = { 
     registrationNumber: "GA12345",
     brand: "Toyota",
 
@@ -13,9 +13,28 @@ var car = {
     }
 }
 
-var myCarDetails =  car.displayDetails;
+const myCarDetails =  car.displayDetails;
 myCarDetails();
 
+//1st solution:
+const myCarDetails = car.displayDetails.bind(car); 
+myCarDetails(); // GA12345 Toyota
+
+//2nd solution:
+myCarDetails.call(car); 
+
+//3th solution:
+const car = { 
+  registrationNumber: "GA12345",
+  brand: "Toyota",
+
+  displayDetails: function(name){
+      console.log(name + ' ' +'has '+ this.registrationNumber + " " + this.brand);
+  }
+}
+
+const myCarDetails =  car.displayDetails;
+myCarDetails.apply(car,['Helin']);
 
 /** 
 
@@ -26,12 +45,18 @@ name bos olmamali
 bosluk icerebilir, ancak bosluk haridcindeki isimler en az 2 karakterden olusmali.
 
 **/
-
 function isValidName(name) {
-  /// your code here
+  if (typeof name === "string") {
+    const hasSpace = /\s/g.test(name);
+    if (hasSpace) {
+      const names = name.trim().split(' ');
+      return names.every(name => name.length >= 2);
+    } else {
+      return name.length >= 2;
+    }
+  }
+  return false;
 }
-
-
 
 /**
 
@@ -51,6 +76,7 @@ function summary(genre, year) {
   )
 }
 
+summary.call(book, 'dystopian', 1932)
 
 
 
